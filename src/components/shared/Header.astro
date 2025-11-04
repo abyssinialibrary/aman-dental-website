@@ -1,7 +1,10 @@
 ---
-// aman-dental/src/components/shared/Header.astro (Clean Button HTML)
+// aman-dental/src/components/shared/Header.astro (FINAL UPDATE for Desktop Nav Active State)
 import { navLinks, clinicInfo } from '../../utils/data';
 
+// currentPath is still needed for initial server-side rendering IF JS fails,
+// but the JS will override it immediately on client load/swap.
+// For a purely client-side approach, this `currentPath` could technically be removed from the frontmatter.
 const currentPath = Astro.url.pathname;
 ---
 
@@ -22,10 +25,8 @@ const currentPath = Astro.url.pathname;
         <li>
           <a
             href={link.path}
-            class:list={[
-              "nav-link",
-              { "active": currentPath === link.path }
-            ]}
+            class="nav-link" {/* Removed server-side active class logic */}
+            data-nav-path={link.path} {/* Added data attribute for JS targeting */}
           >
             {link.name}
           </a>
@@ -33,7 +34,7 @@ const currentPath = Astro.url.pathname;
       ))}
     </ul>
 
-    <!-- Mobile Menu Button (NO INLINE STYLE) -->
+    <!-- Mobile Menu Button -->
     <div class="header-nav-mobile-button h-full flex items-center">
       <button id="mobile-menu-button" aria-label="Open mobile menu" class="text-dark">
         <img id="burger-icon" src="/images/burger-bar.png" alt="Menu Toggle" class="w-6 h-6">
@@ -134,7 +135,20 @@ const currentPath = Astro.url.pathname;
     }
   }
 
-  // --- New Scroll Handling Script ---
+  // --- New function to handle active state for desktop nav links ---
+  function activateDesktopNavLinks() {
+    const currentPath = window.location.pathname;
+    const desktopNavLinks = document.querySelectorAll('.header-nav-desktop .nav-link');
+
+    desktopNavLinks.forEach(link => {
+      link.classList.remove('active'); // Remove active from all first
+      if (link.dataset.navPath === currentPath) {
+        link.classList.add('active'); // Add active to matching link
+      }
+    });
+  }
+
+  // --- Scroll Handling Script ---
   function setupScrollHeaderEffect() {
     const header = document.getElementById('main-header');
     if (!header) {
@@ -152,21 +166,20 @@ const currentPath = Astro.url.pathname;
       }
     }
 
-    // Initialize on load
     handleScroll();
-    // Attach to scroll event
     window.addEventListener('scroll', handleScroll);
-    // Also re-apply on astro:after-swap for view transitions
     document.addEventListener('astro:after-swap', handleScroll);
   }
   
   // Initialize on DOMContentLoaded and after Astro View Transitions
   document.addEventListener('DOMContentLoaded', () => {
     initializeMobileMenu();
-    setupScrollHeaderEffect(); // Call the new function
+    activateDesktopNavLinks(); // NEW: Activate desktop nav on initial load
+    setupScrollHeaderEffect();
   });
   document.addEventListener('astro:after-swap', () => {
     initializeMobileMenu();
-    setupScrollHeaderEffect(); // Call the new function
+    activateDesktopNavLinks(); // NEW: Re-activate desktop nav after view transitions
+    setupScrollHeaderEffect();
   });
 </script>

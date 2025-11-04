@@ -1,0 +1,84 @@
+---
+// aman-dental/src/pages/contact.astro (UPDATED with Calendly Widget)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/shared/Header.astro';
+import Footer from '../components/shared/Footer.astro';
+import { clinicInfo } from '../utils/data';
+
+const pageTitle = "Contact Us";
+const pageDescription = "Get in touch with Aman Dental for appointments, inquiries, or any dental health questions. Find our clinic location and hours.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <!-- Contact --hello--Hero Section -->
+  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center first-section-padding">
+    <div class="container">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4" style="padding-top: 4rem;">Contact Aman Dental</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto">
+        We're here to help you achieve a healthy, beautiful smile. Reach out to us for appointments or inquiries.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Contact Content Section -->
+  <section class="bg-light-bg-section py-16 md:py-24">
+    <div class="container contact-main-grid">
+      <!-- Clinic Information & Map -->
+      <div class="flex flex-col gap-6">
+        <h2 class="text-3xl font-bold text-center md:text-left">Our Clinic Details</h2>
+        <p class="text-lg text-light text-center md:text-left">
+          Visit us at our modern clinic in Addis Ababa or contact us using the details below.
+        </p>
+
+        <div class="flex flex-col items-center md:items-start gap-4 mb-6 text-base">
+          <div class="contact-info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{clinicInfo.address}</span>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-phone"></i>
+            <a href={`tel:${clinicInfo.phone}`}>{clinicInfo.phone}</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <a href={`mailto:${clinicInfo.email}`}>{clinicInfo.email}</a>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-clock"></i>
+            <span>{clinicInfo.hours}</span>
+          </div>
+        </div>
+
+        <!-- Google Maps -->
+        <div class="w-full h-80 rounded-lg overflow-hidden shadow-lg mb-4">
+          <iframe
+            src={clinicInfo.mapEmbedUrl}
+            width="100%"
+            height="100%"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Aman Dental Clinic Location"
+          ></iframe>
+        </div>
+      </div>
+
+      <!-- Calendly Booking Widget -->
+      <div class="form-box !p-0 !shadow-none !bg-transparent"> {/* Styling adjustments for Calendly container */}
+        <h2 class="text-3xl font-bold text-center mb-6">Book Your Appointment</h2>
+        <!-- Calendly inline widget begin -->
+        <div class="calendly-inline-widget" data-url="https://calendly.com/btadele020/dental-consultation" style="min-width:320px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <!-- Calendly inline widget end -->
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</BaseLayout>

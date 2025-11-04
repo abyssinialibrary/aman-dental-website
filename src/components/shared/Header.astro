@@ -1,0 +1,172 @@
+---
+// aman-dental/src/components/shared/Header.astro (Clean Button HTML)
+import { navLinks, clinicInfo } from '../../utils/data';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header id="main-header" class="sticky-header">
+  <nav class="container h-full flex items-center justify-between">
+    <div class="flex items-center">
+      <a href="/" class="header-logo-container">
+        <!-- Logo with fixed height -->
+        <img src="/images/logo.svg" alt={`${clinicInfo.name} Logo`} class="header-logo-img">
+        <span class="clinic-name-text">{clinicInfo.name}</span>
+        <span class="sr-only">Go to homepage</span>
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <ul class="header-nav-desktop space-x-8">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.path}
+            class:list={[
+              "nav-link",
+              { "active": currentPath === link.path }
+            ]}
+          >
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile Menu Button (NO INLINE STYLE) -->
+    <div class="header-nav-mobile-button h-full flex items-center">
+      <button id="mobile-menu-button" aria-label="Open mobile menu" class="text-dark">
+        <img id="burger-icon" src="/images/burger-bar.png" alt="Menu Toggle" class="w-6 h-6">
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script is:inline>
+  // Function to initialize/re-initialize mobile menu event listeners
+  function initializeMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenuCloseButton = document.getElementById('mobile-menu-close-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const mobileMenuList = document.getElementById('mobile-menu-list');
+    const burgerIcon = document.getElementById('burger-icon');
+    const body = document.body;
+    const html = document.documentElement;
+
+    if (!mobileMenuButton || !mobileMenu || !mobileMenuOverlay || !mobileMenuCloseButton || !mobileMenuList || !burgerIcon) {
+      console.warn('Mobile menu elements not found. Skipping initialization.');
+      return;
+    }
+
+    while (mobileMenuList.firstChild) {
+        mobileMenuList.removeChild(mobileMenuList.firstChild);
+    }
+
+    const navLinksData = [
+      { name: "Home", path: "/" },
+      { name: "About Us", path: "/about" },
+      { name: "Services", path: "/services" },
+      { name: "Blog", path: "/blog" },
+      { name: "Contact Us", path: "/contact" },
+    ];
+    const currentPath = window.location.pathname;
+
+    navLinksData.forEach(link => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = link.path;
+        a.textContent = link.name;
+        a.classList.add('mobile-menu-item');
+        if (currentPath === link.path) {
+            a.classList.add('active');
+        }
+        li.appendChild(a);
+        mobileMenuList.appendChild(li);
+    });
+    
+    const toggleMobileMenu = (forceClose = false) => {
+      const isOpen = mobileMenu.classList.contains('is-open');
+      const newState = forceClose ? false : !isOpen;
+
+      mobileMenu.classList.toggle('is-open', newState);
+      mobileMenuOverlay.classList.toggle('is-open', newState);
+      body.classList.toggle('overflow-hidden', newState);
+      html.classList.toggle('overflow-hidden', newState);
+      
+      if (newState) {
+          burgerIcon.style.display = 'none';
+      } else {
+          burgerIcon.style.display = 'block';
+      }
+    };
+
+    mobileMenuButton.onclick = (event) => {
+        event.stopPropagation();
+        toggleMobileMenu();
+    };
+    mobileMenuCloseButton.onclick = (event) => {
+        event.stopPropagation();
+        toggleMobileMenu(true);
+    };
+    mobileMenuOverlay.onclick = (event) => {
+        toggleMobileMenu(true);
+    };
+
+    document.onclick = (event) => {
+        const isClickInsidePanel = mobileMenu.contains(event.target);
+        const isClickOnToggleButton = mobileMenuButton.contains(event.target);
+        
+        if (mobileMenu.classList.contains('is-open') && !isClickInsidePanel && !isClickOnToggleButton) {
+            toggleMobileMenu(true);
+        }
+    };
+
+    mobileMenuList.querySelectorAll('a').forEach(link => {
+        link.onclick = (event) => {
+          toggleMobileMenu(true);
+        };
+    });
+
+    burgerIcon.style.display = 'block';
+    if (mobileMenu.classList.contains('is-open')) {
+        burgerIcon.style.display = 'none';
+    }
+  }
+
+  // --- New Scroll Handling Script ---
+  function setupScrollHeaderEffect() {
+    const header = document.getElementById('main-header');
+    if (!header) {
+      console.warn('Header element with ID "main-header" not found for scroll effect.');
+      return;
+    }
+
+    const scrollThreshold = 50; // Pixels scrolled before header changes
+
+    function handleScroll() {
+      if (window.scrollY > scrollThreshold) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+
+    // Initialize on load
+    handleScroll();
+    // Attach to scroll event
+    window.addEventListener('scroll', handleScroll);
+    // Also re-apply on astro:after-swap for view transitions
+    document.addEventListener('astro:after-swap', handleScroll);
+  }
+  
+  // Initialize on DOMContentLoaded and after Astro View Transitions
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeMobileMenu();
+    setupScrollHeaderEffect(); // Call the new function
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initializeMobileMenu();
+    setupScrollHeaderEffect(); // Call the new function
+  });
+</script>

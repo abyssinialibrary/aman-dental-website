@@ -1,0 +1,41 @@
+---
+// aman-dental/src/components/cards/BlogCard.astro (New Component)
+interface Props {
+  post: {
+    slug: string;
+    title: string;
+    date: string;
+    author: string;
+    summary: string;
+    image: string;
+    category: string;
+  };
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<a href={`/blog/${post.slug}`} class="card blog-card-link block text-left">
+  <div class="overflow-hidden rounded-lg mb-4">
+    <img src={post.image} alt={post.title} class="blog-card-image w-full h-48 object-cover" loading="lazy" />
+  </div>
+  <div class="blog-card-content flex-grow flex flex-col">
+    <h3 class="blog-card-title text-xl font-semibold text-dark mb-2">{post.title}</h3>
+    <p class="blog-card-meta text-sm text-light mb-2">
+      By {post.author} on {formattedDate} | Category: {post.category}
+    </p>
+    <p class="blog-card-summary text-sm text-light mb-4 flex-grow">{post.summary}</p>
+    <span class="blog-card-read-more inline-block mt-auto text-primary">Read More &rarr;</span>
+  </div>
+</a>
+
+<style is:global>
+  /* Styles for BlogCard - to be defined in globals.css for consistent overrides if needed */
+  /* Place these in globals.css when instructed */
+</style>

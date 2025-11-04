@@ -1,0 +1,78 @@
+---
+// aman-dental/src/pages/blog/[slug].astro (New Dynamic Blog Article Page)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+import { blogPosts } from '../../utils/data';
+
+// Generate static paths for each blog post
+export async function getStaticPaths() {
+  return blogPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: {
+    slug: string;
+    title: string;
+    date: string;
+    author: string;
+    summary: string;
+    image: string;
+    category: string;
+    content: string; // The full HTML content
+  };
+}
+
+const { post } = Astro.props;
+
+const pageTitle = post.title;
+const pageDescription = post.summary;
+
+const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <!-- Blog Post Hero -->
+  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center">
+    <div class="container max-w-3xl">
+      <p class="font-semibold mb-2">{post.category}</p>
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{post.title}</h1>
+      <p class="text-lg md:text-xl">
+        By {post.author} on {formattedDate}
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Post Content Section -->
+  <section class="bg-white-section py-16 md:py-24">
+    <div class="container max-w-3xl">
+      <div class="mb-8">
+        <img src={post.image} alt={post.title} class="w-full h-auto max-h-96 object-cover rounded-lg shadow-lg" />
+      </div>
+
+      <article class="blog-post-content" set:html={post.content}></article>
+
+      <div class="mt-12 text-center">
+        <a href="/blog" class="btn-secondary inline-flex items-center space-x-2">
+          <i class="fas fa-arrow-left mr-2"></i>
+          <span>Back to Blog</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</BaseLayout>

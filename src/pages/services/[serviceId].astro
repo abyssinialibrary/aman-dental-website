@@ -1,0 +1,82 @@
+---
+// aman-dental/src/pages/services/[serviceId].astro (UPDATED for Pure CSS)
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/shared/Header.astro';
+import Footer from '../../components/shared/Footer.astro';
+import { services, clinicInfo } from '../../utils/data';
+
+// Generate static paths for each service
+export async function getStaticPaths() {
+  return services.map(service => ({
+    params: { serviceId: service.id },
+    props: { service },
+  }));
+}
+
+interface Props {
+  service: {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+    fullDescription: string;
+  };
+}
+
+const { service } = Astro.props;
+
+const pageTitle = service.name;
+const pageDescription = service.description;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <!-- Service Detail Hero -->
+  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center">
+    <div class="container">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">{service.name}</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto">
+        {service.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Service Content Section -->
+  <section class="bg-white-section py-16 md:py-24">
+    <div class="container max-w-3xl">
+      <div class="flex flex-col items-center mb-8">
+        <div class="text-primary text-7xl mb-4">
+          <i class={`fa-solid ${service.icon}`}></i>
+        </div>
+        <h2 class="text-3xl md:text-4xl font-bold text-dark mb-6">{service.name} at Aman Dental</h2>
+      </div>
+
+      <p class="text-lg text-light leading-relaxed mb-6">
+        {service.fullDescription}
+      </p>
+
+      <p class="text-lg text-light leading-relaxed mb-6">
+        At {clinicInfo.name}, we are committed to providing personalized care and the most effective treatments to ensure your oral health and beautiful smile. Our experienced team utilizes the latest technology to deliver comfortable and efficient service.
+      </p>
+
+      <div class="mt-12 text-center">
+        <h3 class="text-2xl font-bold text-dark mb-6">Ready to learn more or book an appointment?</h3>
+        <a href="/contact" class="btn-primary inline-flex items-center space-x-2">
+          <span>Contact Us Today</span>
+          <i class="fas fa-calendar-alt ml-2"></i>
+        </a>
+        <a href="/services" class="ml-4 text-primary hover:underline inline-flex items-center space-x-2">
+          <i class="fas fa-arrow-left mr-2"></i>
+          <span>Back to Services</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</BaseLayout>

@@ -1,0 +1,58 @@
+---
+// aman-dental/src/pages/services.astro (UPDATED for Pure CSS Grid Fix)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/shared/Header.astro';
+import Footer from '../components/shared/Footer.astro';
+import ServiceCard from '../components/cards/ServiceCard.astro';
+import { services } from '../utils/data';
+
+const pageTitle = "Our Services";
+const pageDescription = "Explore the comprehensive range of dental services offered at Aman Dental, from general dentistry to cosmetic and specialized treatments in Addis Ababa.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <!-- Hero Section for Services -->
+  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center">
+    <div class="container">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4" style="padding-top: 4rem;";>Our Comprehensive Dental Services</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto">
+        From routine check-ups to advanced treatments, we're here to care for your smile.
+      </p>
+    </div>
+  </section>
+
+  <!-- Services Grid -->
+  <section class="bg-light-bg-section py-16 md:py-24">
+    <div class="container text-center">
+      <h2 class="sr-only">List of Dental Services</h2>
+      <!-- Grid for All Services: uses container-mobile-padded to control width on mobile -->
+      <div class="container-mobile-padded grid-container">
+        {services.map((service) => (
+          <ServiceCard service={service} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-accent-green-section text-white py-16 md:py-20 text-center">
+    <div class="container">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Experience Exceptional Care?</h2>
+      <p class="text-lg mb-8 max-w-xl mx-auto">
+        Our team is here to answer your questions and help you schedule your next appointment.
+      </p>
+      <a href="/contact" class="btn-primary inline-flex items-center space-x-2">
+        <span>Contact Us Today</span>
+        <i class="fas fa-envelope ml-2"></i>
+      </a>
+    </div>
+  </section>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</BaseLayout>

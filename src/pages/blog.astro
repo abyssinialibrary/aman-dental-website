@@ -1,0 +1,47 @@
+---
+// aman-dental/src/pages/blog.astro (New Blog Listing Page)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/shared/Header.astro';
+import Footer from '../components/shared/Footer.astro';
+import BlogCard from '../components/cards/BlogCard.astro';
+import { blogPosts } from '../utils/data';
+
+const pageTitle = "Aman Dental Blog";
+const pageDescription = "Read our latest articles on dental health, preventative care, cosmetic dentistry, and more from the experts at Aman Dental.";
+
+// Sort blog posts by date, newest first
+const sortedPosts = blogPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <!-- Hero Section for Blog -->
+  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center">
+    <div class="container">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4" style="padding-top: 4rem;";>Aman Dental Blog</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto">
+        Insights and tips for a healthier, brighter smile.
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="bg-light-bg-section py-16 md:py-24">
+    <div class="container text-center">
+      <h2 class="sr-only">Latest Articles</h2>
+      <!-- Grid for All Blog Posts -->
+      <div class="container-mobile-padded grid-container">
+        {sortedPosts.map((post) => (
+          <BlogCard post={post} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</BaseLayout>

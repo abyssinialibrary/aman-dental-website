@@ -1,0 +1,22 @@
+---
+// aman-dental/src/components/cards/ServiceCard.astro (UPDATED for Pure CSS)
+interface Props {
+  service: {
+    id: string;
+    name: string;
+    description: string;
+    icon: string;
+  };
+}
+
+const { service } = Astro.props;
+---
+
+<a href={`/services/${service.id}`} class="card service-card-link block text-center">
+  <div class="service-card-icon text-primary text-5xl mb-4">
+    <i class={`fa-solid ${service.icon}`}></i>
+  </div>
+  <h3 class="service-card-title text-xl font-semibold text-dark mb-2">{service.name}</h3>
+  <p class="text-light text-sm">{service.description}</p>
+  <span class="service-card-learn-more inline-block mt-4 text-primary">Learn More</span>
+</a>

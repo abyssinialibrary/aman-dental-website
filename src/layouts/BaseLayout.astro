@@ -1,0 +1,66 @@
+---
+// aman-dental/src/layouts/BaseLayout.astro (FINAL, DEFINITIVE FIX: Menu HTML moved here)
+import '../styles/globals.css';
+import { ViewTransitions } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+// Placeholder for Google Analytics Tracking ID
+const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Replace with your actual GA ID later if you use it
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title} | Aman Dental</title>
+
+    <!-- Favicon (placeholder - you can replace with your actual favicon later) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts are imported in globals.css -->
+
+    <!-- Font Awesome for Icons (using CDN for simplicity) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Analytics Placeholder -->
+    {GA_TRACKING_ID !== 'G-XXXXXXXXXX' && (
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}></script>
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{GA_TRACKING_ID}');
+      </script>
+    )}
+    <ViewTransitions />
+  </head>
+  <body>
+    <slot name="header" />
+    <main>
+      <slot />
+    </main>
+    <slot name="footer" />
+
+    <!-- Mobile Menu Panel (Moved from Header.astro to be a direct child of body) -->
+    <div id="mobile-menu" class="mobile-menu-panel">
+      <button id="mobile-menu-close-button" aria-label="Close mobile menu" class="mobile-menu-close-btn">
+          <i class="fas fa-times"></i>
+      </button>
+      <ul id="mobile-menu-list" class="flex-col items-center space-y-4 mt-6">
+        <!-- Menu items will be dynamically populated by Header.astro's JS -->
+      </ul>
+    </div>
+
+    <!-- Mobile Menu Overlay (Moved from Header.astro to be a direct child of body) -->
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay"></div>
+  </body>
+</html>

@@ -1,0 +1,106 @@
+---
+// aman-dental/src/components/forms/ContactForm.astro (UPDATED for Pure CSS)
+---
+
+<form id="contactForm" class="space-y-6">
+  <div class="form-group">
+    <label for="name" class="form-label">Your Name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      class="form-input"
+      placeholder="John Doe"
+      required
+    />
+    <p id="nameError" class="error-message">Name is required.</p>
+  </div>
+
+  <div class="form-group">
+    <label for="email" class="form-label">Your Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      class="form-input"
+      placeholder="john.doe@example.com"
+      required
+    />
+    <p id="emailError" class="error-message">A valid email is required.</p>
+  </div>
+
+  <div class="form-group">
+    <label for="phone" class="form-label">Phone Number (Optional)</label>
+    <input
+      type="tel"
+      id="phone"
+      name="phone"
+      class="form-input"
+      placeholder="+251 9XX XXX XXXX"
+    />
+    <p id="phoneError" class="error-message">Invalid phone number format.</p>
+  </div>
+
+  <div class="form-group">
+    <label for="message" class="form-label">Your Message</label>
+    <textarea
+      id="message"
+      name="message"
+      rows="5"
+      class="form-textarea"
+      placeholder="I would like to book an appointment for..."
+      required
+    ></textarea>
+    <p id="messageError" class="error-message">Message is required.</p>
+  </div>
+
+  <button type="submit" class="btn-primary w-full">
+    <span>Send Message</span>
+    <i class="fas fa-paper-plane ml-2"></i>
+  </button>
+
+  <p id="formSuccess" class="form-success-message">Your message has been sent successfully!</p>
+  <p id="formError" class="form-error-message">There was an error sending your message. Please try again later.</p>
+</form>
+
+<script>
+  import { validateForm } from '../../utils/formValidation';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm');
+    if (form) {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = {
+          name: (document.getElementById('name') as HTMLInputElement).value,
+          email: (document.getElementById('email') as HTMLInputElement).value,
+          phone: (document.getElementById('phone') as HTMLInputElement).value,
+          message: (document.getElementById('message') as HTMLTextAreaElement).value,
+        };
+
+        const formSuccess = document.getElementById('formSuccess');
+        const formError = document.getElementById('formError');
+
+        // Hide previous messages
+        if (formSuccess) formSuccess.classList.remove('show');
+        if (formError) formError.classList.remove('show');
+
+        const isValid = validateForm(formData);
+
+        if (isValid) {
+          console.log('Form data is valid:', formData);
+          console.log('Simulating form submission...');
+
+          await new Promise(resolve => setTimeout(resolve, 1500));
+
+          if (formSuccess) formSuccess.classList.add('show');
+          form.reset();
+        } else {
+          console.log('Form data is invalid.');
+          if (formError) formError.classList.add('show');
+        }
+      });
+    }
+  });
+</script>

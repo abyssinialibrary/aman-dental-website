@@ -1,0 +1,51 @@
+---
+// aman-dental/src/components/shared/Footer.astro (UPDATED for Footer Logo)
+import { clinicInfo, socialLinks, navLinks } from '../../utils/data';
+---
+
+<footer class="footer-section">
+  <div class="container footer-grid">
+    <!-- Clinic Info -->
+    <div>
+      <!-- New Footer Logo -->
+      <img src="/images/footer-logo.svg" alt={`${clinicInfo.name} Logo`} class="footer-logo">
+      <p class="text-white mb-2">{clinicInfo.address}</p>
+      <p class="text-white mb-2">Phone: <a href={`tel:${clinicInfo.phone}`} class="text-white">{clinicInfo.phone}</a></p>
+      <p class="text-white mb-4">Email: <a href={`mailto:${clinicInfo.email}`} class="text-white">{clinicInfo.email}</a></p>
+      <p class="text-white mb-2">Hours: {clinicInfo.hours}</p>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h3 class="footer-heading">Quick Links</h3>
+      <ul class="footer-links-list">
+        {navLinks.map((link) => (
+          <li>
+            <a href={link.path}>{link.name}</a>
+          </li>
+        ))}
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/terms-of-service">Terms of Service</a></li>
+      </ul>
+    </div>
+
+    <!-- Social Media -->
+    <div>
+      <h3 class="footer-heading">Connect With Us</h3>
+      <div class="footer-social-links">
+        <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href={socialLinks.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-copyright">
+    <p>&copy; {new Date().getFullYear()} {clinicInfo.name}. All rights reserved.</p>
+  </div>
+</footer>

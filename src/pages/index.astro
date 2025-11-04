@@ -1,0 +1,85 @@
+---
+// aman-dental/src/pages/index.astro (UPDATED for Pure CSS Grid Fix)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/shared/Header.astro';
+import Footer from '../components/shared/Footer.astro';
+import ServiceCard from '../components/cards/ServiceCard.astro';
+import TestimonialCard from '../components/cards/TestimonialCard.astro';
+import { clinicInfo, services, testimonials } from '../utils/data';
+
+const pageTitle = "Home";
+const pageDescription = clinicInfo.tagline;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <Fragment slot="header">
+    <Header />
+  </Fragment>
+
+  <!-- Hero Section -->
+  <section class="hero-bg-overlay py-24 md:py-32">
+    
+    <div class="container hero-content">
+      <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6 animate-fade-in-down">
+        {clinicInfo.tagline}
+      </h1>
+      <p class="text-lg md:text-xl text-white mb-10 max-w-2xl mx-auto animate-fade-in">
+        Providing compassionate and state-of-the-art dental care for families in Addis Ababa.
+      </p>
+      <a href="/contact" class="btn-primary inline-flex items-center space-x-2 animate-bounce-in">
+        <span>Book Appointment</span>
+        <i class="fas fa-calendar-check ml-2"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Services Overview Section -->
+  <section class="bg-light-bg-section py-16 md:py-24">
+    <div class="container text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-12">Our Dental Services</h2>
+      <!-- Grid for Services: uses container-mobile-padded to control width on mobile -->
+      <div class="container-mobile-padded grid-container">
+        {services.slice(0, 3).map((service) => ( // Show first 3 services on homepage
+          <ServiceCard service={service} />
+        ))}
+      </div>
+      <div class="mt-12">
+        <a href="/services" class="btn-secondary inline-flex items-center space-x-2">
+          <span>View All Services</span>
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center">
+    <div class="container">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready for a Brighter Smile?</h2>
+      <p class="text-lg mb-8 max-w-xl mx-auto">
+        Contact Aman Dental today to schedule your consultation and experience exceptional dental care.
+      </p>
+      <a href="/contact" class="btn-primary inline-flex items-center space-x-2">
+        <span>Schedule an Appointment</span>
+        <i class="fas fa-phone ml-2"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- Client Testimonials Section -->
+  <section class="bg-white-section py-16 md:py-24">
+    <div class="container text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-12">What Our Patients Say</h2>
+      <!-- Grid for Testimonials: uses container-mobile-padded to control width on mobile -->
+      <div class="container-mobile-padded grid-container">
+        {testimonials.map((testimonial) => (
+          <TestimonialCard testimonial={testimonial} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Fragment slot="footer">
+    <Footer />
+  </Fragment>
+</BaseLayout>

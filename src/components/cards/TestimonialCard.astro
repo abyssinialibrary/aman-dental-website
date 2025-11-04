@@ -1,0 +1,16 @@
+---
+// aman-dental/src/components/cards/TestimonialCard.astro (UPDATED for Pure CSS)
+interface Props {
+  testimonial: {
+    quote: string;
+    name: string;
+  };
+}
+
+const { testimonial } = Astro.props;
+---
+
+<div class="card text-center">
+  <p class="text-dark italic mb-4">"{testimonial.quote}"</p>
+  <p class="font-semibold text-primary">- {testimonial.name}</p>
+</div>

@@ -1,5 +1,5 @@
 ---
-// aman-dental/src/pages/about.astro (UPDATED for Pure CSS Grid Fix)
+// aman-dental/src/pages/about.astro (FULL Update with Visual Enhancements)
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/shared/Header.astro';
 import Footer from '../components/shared/Footer.astro';
@@ -7,7 +7,7 @@ import TeamMemberCard from '../components/cards/TeamMemberCard.astro';
 import { clinicInfo, teamMembers } from '../utils/data';
 
 const pageTitle = "About Us";
-const pageDescription = "Learn more about Aman Dental, our mission, values, and our dedicated dental team in Addis Ababa.";
+const pageDescription = "Learn more about Aman Dental's mission, values, and our dedicated team committed to providing excellent dental care in Addis Ababa.";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -15,45 +15,40 @@ const pageDescription = "Learn more about Aman Dental, our mission, values, and 
     <Header />
   </Fragment>
 
-  <!-- Hero Section for About Us -->
-  <section class="bg-primary-blue-section text-white py-16 md:py-20 text-center">
+  <!-- About Us Hero Section -->
+  <section class="page-hero-section text-white text-center" style="--bg-image: url('/images/hero-about.jpg');">
     <div class="container">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-4" style="padding-top: 4rem;";>About Aman Dental</h1>
-      <p class="text-lg md:text-xl max-w-2xl mx-auto">
-        Your trusted partner for comprehensive and compassionate dental care in Ethiopia.
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 animate-fade-in-down">About Aman Dental</h1>
+      <p class="text-lg md:text-xl max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.5s;">
+        Your trusted partner for a lifetime of healthy and beautiful smiles.
       </p>
     </div>
   </section>
 
-  <!-- Clinic's Mission Section -->
-  <section class="bg-white-section py-16 md:py-24">
-    <div class="container max-w-3xl">
-      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-8 text-center">Our Mission & Values</h2>
-      <p class="text-lg text-light leading-relaxed mb-6">
+  <!-- Mission Section -->
+  <section class="bg-gradient-section py-16 md:py-24">
+    <div class="container text-center max-w-3xl mx-auto">
+      <h2 class="text-4xl font-bold mb-6">Our Mission & Values</h2>
+      <p class="text-lg text-light leading-relaxed animate-fade-in" style="animation-delay: 0.7s;">
         {clinicInfo.missionStatement}
       </p>
-      <ul class="list-disc list-inside text-light text-lg space-y-2">
-        <li><span class="font-semibold text-dark">Patient-Centered Care:</span> Your comfort and well-being are our top priorities.</li>
-        <li><span class="font-semibold text-dark">Excellence & Innovation:</span> Committed to the highest standards of dental practice and continuous learning.</li>
-        <li><span class="font-semibold text-dark">Integrity & Trust:</span> Building honest and transparent relationships with every patient.</li>
-        <li><span class="font-semibold text-dark">Community Focus:</span> Dedicated to serving the oral health needs of Addis Ababa.</li>
-      </ul>
     </div>
   </section>
 
   <!-- Team Section -->
-  <section class="bg-light-bg-section py-16 md:py-24">
+  <section class="bg-gradient-section py-16 md:py-24">
     <div class="container text-center">
-      <h2 class="text-3xl md:text-4xl font-bold text-dark mb-12">Meet Our Dedicated Team</h2>
-      <!-- Grid for Team Members: uses container-mobile-padded to control width on mobile -->
+      <h2 class="text-4xl font-bold mb-4">Meet Our Dedicated Team</h2>
+      <p class="text-lg text-light max-w-3xl mx-auto mb-12">
+        Our experienced and compassionate team is committed to providing you with the highest quality dental care.
+      </p>
       <div class="container-mobile-padded grid-container">
-        {teamMembers.map((member) => (
-          <TeamMemberCard member={member} />
+        {teamMembers.map((member, index) => (
+          <div class="animate-slide-in-up" style={`animation-delay: ${0.2 * index}s;`}>
+            <TeamMemberCard member={member} />
+          </div>
         ))}
       </div>
-      <p class="mt-10 text-lg text-light">
-        Our team is passionate about creating healthy, beautiful smiles and providing a comfortable, friendly experience for every patient.
-      </p>
     </div>
   </section>
 

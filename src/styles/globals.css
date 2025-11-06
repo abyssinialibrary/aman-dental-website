@@ -1,4 +1,4 @@
-/* aman-dental/src/styles/globals.css (THE DEFINITIVE, FINAL VERSION - No Toggle Button Border/Background) */
+/* aman-dental/src/styles/globals.css (THE DEFINITIVE, FINAL VERSION - Page Heroes & Gradients) */
 
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&display=swap');
@@ -67,6 +67,7 @@ html {
 }
 
 body {
+  background-color: blue;
   height: 100%;
   margin: 0;
   font-family: var(--font-family-sans);
@@ -128,13 +129,20 @@ main {
 .text-primary { color: var(--color-primary-blue); }
 .text-accent { color: var(--color-accent-green); }
 
-/* Backgrounds */
-.bg-primary-blue-section { background-color: var(--color-primary-blue); }
-.bg-accent-green-section { background-color: var(--color-accent-green); }
-.bg-white-section { background-color: var(--color-white); }
-.bg-light-bg-section { background-color: var(--color-bg); }
-.bg-dark { background-color: var(--color-dark-text); } /* For footer */
-.bg-white { background-color: var(--color-white); }
+/* Backgrounds - OBSOLETE for new hero sections */
+/* .bg-primary-blue-section { background-color: var(--color-primary-blue); } */
+/* .bg-accent-green-section { background-color: var(--color-accent-green); } */
+/* .bg-white-section { background-color: var(--color-white); } */
+.bg-light-bg-section { 
+    background-color: rgb(178, 203, 237); 
+} 
+.bg-dark { background: linear-gradient(to bottom, var(--color-gray-100), var(--color-bg)); } /* For footer */
+
+/* New Gradient Background for Sections */
+.bg-gradient-section {
+    background-color: rgb(178, 203, 237); (!important)
+    background: var(--color-bg); background-image: linear-gradient(to bottom, rgba(var(--color-primary-blue-rgb), 0.05), rgba(var(--color-accent-green-rgb), 0.05));
+}
 
 
 /* Font weights */
@@ -209,7 +217,7 @@ main {
 .h-full { height: 100%; }
 .h-80 { height: 20rem; /* 320px */ }
 .max-w-xs { max-width: var(--max-width-xs); }
-.max-w-sm { max-width: var(--max-width-sm); }
+.max-w-sm { max-w: var(--max-width-sm); }
 .max-w-lg { max-width: var(--max-width-lg); }
 .max-w-xl { max-width: var(--max-width-xl); }
 .max-w-2xl { max-width: var(--max-width-2xl); }
@@ -319,24 +327,26 @@ section {
 }
 
 
-/* --- Header (now contains only visible header elements) --- */
-.sticky-header {
-  height: 60px;
+/* --- Header --- */
+#main-header { /* Target by ID for highest specificity */
+  position: fixed; /* Always fixed at the top */
+  top: 1rem; /* Gap from the screen top */
   left: 50%;
-  transform: translateX(-50%);  
-  border-radius: 4rem;
-  position: fixed;
-  top: 1rem;
-  width: calc(100% - 1rem);
-  z-index: 1000; /* High, so it stays above regular page content */
-  background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow-sm);
+  transform: translateX(-50%);
+  width: calc(100% - 1rem); /* 0.5rem margin on each side (1rem total) */
+  z-index: 1000;
+  background-color: transparent; /* Initially transparent */
+  backdrop-filter: blur(0px); /* Initially no blur */
+  box-shadow: none; /* Initially no shadow */
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 0.75rem; /* Rounded edges */
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
 }
 
-.sticky-header.scrolled{
-  background-color: rgba(79, 76, 76, 0.5);
-  backdrop-filter: blur(10px); 
+#main-header.scrolled {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   box-shadow: var(--shadow-sm);
 }
 
@@ -375,29 +385,23 @@ section {
 .nav-link {
   transition: all 0.3s ease-in-out;
   border-radius: 0.25rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 0.75rem; /* Adjusted padding to accommodate border-bottom */
   font-size: var(--text-lg);
   font-weight: 500;
-  transition: color 0.3s ease-in-out;
-  padding-bottom: var(--spacing-0-5);
+  color: var(--color-dark-text); /* Default color for nav links */
   text-decoration: none; /* Remove default underline */
 }
 .nav-link:hover {
   background-color: rgba(0,0,0,0.05);
   color: var(--color-primary-blue);
-  text-decoration: none; /* Add underline on hover */
+  text-decoration: none;
 }
 .nav-link.active {
   background-color: var(--color-white);
   color: var(--color-primary-blue);
   border-bottom: 2px solid var(--color-primary-blue);
 }
-#mobile-menu-button {
-  appearance: none;
-  background: none;
-  border: none;
-  padding: 0;
-}
+
 /* Mobile Nav Button (Crucial Reset) */
 #mobile-menu-button { /* Target by ID for highest specificity */
   background: none; /* Explicitly remove background */
@@ -409,6 +413,7 @@ section {
   outline: none;   /* Remove focus outline */
   box-shadow: none; /* Remove any default box shadow */
   cursor: pointer; /* Ensure cursor indicates it's clickable */
+  display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease-in-out; /* Re-add desired transition */
@@ -421,12 +426,11 @@ section {
 
 /* Mobile Nav Button Custom Icon Sizing */
 #burger-icon {
-    width: 2rem; /* Equivalent to w-6 (24px) */
-    height: 2rem; /* Equivalent to h-6 (24px) */
-    object-fit: contain; /* Ensures the image fits without cropping */
-    display: block; /* Ensure it's block within the flex container */
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    display: block;
 }
-
 
 
 /* --- Mobile Navigation Components (now direct children of body) --- */
@@ -443,9 +447,8 @@ section {
   right: -100%;
   width: 80%;
   max-width: var(--max-width-xs);
-  /* New height adjustment: */
-  height: auto; /* Content-driven height */
-  max-height: 100vh; /* But don't exceed viewport height */
+  height: auto;
+  max-height: 100vh;
   border-bottom-left-radius: var(--spacing-1); /* Rounded corner */
   padding: var(--spacing-2);
   z-index: 10002; /* HIGHEST: always on top */
@@ -523,12 +526,12 @@ section {
 
 
 @media (min-width: 768px) {
-  .sticky-header {
+  #main-header {
     padding-top: var(--spacing-1);
     padding-bottom: var(--spacing-1);
   }
   .header-nav-desktop { display: flex; }
-  .header-nav-mobile-button { display: none; }
+  #mobile-menu-button { display: none; } /* Hide button on desktop */
   .mobile-menu-panel { display: none !important; }
   .mobile-menu-overlay { display: none !important; }
 }
@@ -618,19 +621,19 @@ section {
 }
 
 
-/* --- Hero Section Specifics --- */
+/* --- Hero Section Specifics (Homepage) --- */
 .hero-bg-overlay {
-  top: 0;
   background: linear-gradient(to right, var(--color-primary-blue), var(--color-accent-green));
   color: var(--color-white);
   position: relative;
   overflow: hidden;
-  min-height: 100vh;
+  min-height: 100vh; /* Ensure hero fills viewport */
+  padding-top: 10rem; /* Adjusted for fixed header + visual space */
   padding-bottom: var(--spacing-6);
 }
 @media (min-width: 768px) {
   .hero-bg-overlay {
-    padding-top: var(--spacing-8);
+    padding-top: 12rem; /* More space on larger screens */
     padding-bottom: var(--spacing-8);
   }
 }
@@ -638,18 +641,64 @@ section {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('/images/hero-bg.jpg'); /* Your hero image */
+  background-image: var(--bg-image, url('/images/hero-bg.jpg')); /* Default hero image */
   background-size: cover;
   background-position: center;
-  opacity: 0.7;
+  opacity: 0.7; /* Increased opacity for prominence */
   z-index: 0;
 }
 .hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
-  padding-top: var(--spacing-4);
+  /* padding-top is now handled by .hero-bg-overlay for homepage */
 }
+
+/* --- Page Hero Section Specifics (for About, Services, Contact, Blog) --- */
+.page-hero-section {
+  position: relative;
+  overflow: hidden;
+  color: var(--color-white); /* Text color over the image */
+  text-align: center;
+  min-height: 50vh; /* Make other page heroes at least 50% viewport height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 10rem; /* Adjusted for fixed header + visual space */
+  padding-bottom: var(--spacing-6);
+}
+@media (min-width: 768px) {
+  .page-hero-section {
+    min-height: 60vh; /* Slightly taller on desktop */
+    padding-top: 12rem; /* More space on larger screens */
+    padding-bottom: var(--spacing-8);
+  }
+}
+
+.page-hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--bg-image); /* Image defined per page via CSS variable */
+  background-size: cover;
+  background-position: center;
+  opacity: 1; /* Opacity for the image itself */
+  z-index: 0;
+}
+
+.page-hero-section::after { /* Gradient overlay on top of the image */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(52, 152, 219, 0.7), rgba(46, 204, 113, 0.7)); /* Blue to Green gradient */
+    opacity: 0.4; /* Fully opaque overlay on top of image with opacity */
+    z-index: 1; /* Above the image, below the text */
+}
+.page-hero-section > * { /* Ensure content is above the overlay */
+    position: relative;
+    z-index: 2;
+}
+
 
 /* Animations */
 .animate-fade-in-down { animation: fadeInDown 1s ease-out forwards; opacity: 0; transform: translateY(-20px); }

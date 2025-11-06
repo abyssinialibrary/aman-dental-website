@@ -335,13 +335,14 @@ section {
   transform: translateX(-50%);
   width: calc(100% - 1rem); /* 0.5rem margin on each side (1rem total) */
   z-index: 1000;
-  background-color: transparent; /* Initially transparent */
-  backdrop-filter: blur(0px); /* Initially no blur */
-  box-shadow: none; /* Initially no shadow */
+  background-color: rgba(255, 255, 255); /* Initially transparent */
+  backdrop-filter: blur(10px); /* Initially no blur */
+  box-shadow: var(--shadow-sm); /* Initially no shadow */
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 0.75rem; /* Rounded edges */
+  border-radius: 2rem; /* Rounded edges */
   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+  
 }
 
 #main-header.scrolled {
@@ -381,11 +382,18 @@ section {
   list-style: none;
   margin: 0;
   padding: 0;
+  margin-left: auto;
+  height: 100%;
 }
 .nav-link {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-bottom: 2px solid transparent;
+  height: auto;
   transition: all 0.3s ease-in-out;
   border-radius: 0.25rem;
-  padding: 0.5rem 0.75rem; /* Adjusted padding to accommodate border-bottom */
+  padding: 0.7rem 0.7rem; /* Adjusted padding to accommodate border-bottom */
   font-size: var(--text-lg);
   font-weight: 500;
   color: var(--color-dark-text); /* Default color for nav links */
@@ -399,7 +407,7 @@ section {
 .nav-link.active {
   background-color: var(--color-white);
   color: var(--color-primary-blue);
-  border-bottom: 2px solid var(--color-primary-blue);
+  border-color: var(--color-primary-blue);
 }
 
 /* Mobile Nav Button (Crucial Reset) */
@@ -480,6 +488,7 @@ section {
 
 /* Dim overlay when mobile menu is open */
 .mobile-menu-overlay {
+  opacity: 25%;
   display: none;
   position: fixed; /* Truly fixed to viewport */
   inset: 0;
@@ -491,7 +500,7 @@ section {
 }
 .mobile-menu-overlay.is-open {
   display: block;
-  opacity: 1;
+  opacity: 0.7;
   pointer-events: auto; /* Interactive when open */
 }
 

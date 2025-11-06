@@ -24,6 +24,7 @@ export const navLinks = [
   { name: "Services", path: "/services" },
   { name: "Blog", path: "/blog" }, // NEW BLOG LINK
   { name: "Contact Us", path: "/contact" },
+  { name: "Book Now", path: "/contact", isButton: true },
 ];
 
 export const services = [

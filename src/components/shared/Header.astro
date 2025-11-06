@@ -1,10 +1,7 @@
 ---
-// aman-dental/src/components/shared/Header.astro (FINAL UPDATE for Desktop Nav Active State)
+// aman-dental/src/components/shared/Header.astro (FINAL UPDATE for "Book Now" Button)
 import { navLinks, clinicInfo } from '../../utils/data';
 
-// currentPath is still needed for initial server-side rendering IF JS fails,
-// but the JS will override it immediately on client load/swap.
-// For a purely client-side approach, this `currentPath` could technically be removed from the frontmatter.
 const currentPath = Astro.url.pathname;
 ---
 
@@ -25,8 +22,16 @@ const currentPath = Astro.url.pathname;
         <li>
           <a
             href={link.path}
-            class="nav-link" {/* Removed server-side active class logic */}
-            data-nav-path={link.path} {/* Added data attribute for JS targeting */}
+            target={link.isButton ? "_blank" : "_self"} {/* Open button links in new tab */}
+            rel={link.isButton ? "noopener noreferrer" : ""}
+            class:list={[
+              "nav-link",
+              { "btn-primary": link.isButton }, // Apply button style if it's a button
+              { "text-white": link.isButton },   // Ensure white text on button
+              // Apply 'active' class only if NOT a button AND current path matches
+              { "active": currentPath === link.path && !link.isButton }
+            ]}
+            data-nav-path={link.path} {/* Data attribute for JS targeting */}
           >
             {link.name}
           </a>
@@ -64,12 +69,15 @@ const currentPath = Astro.url.pathname;
         mobileMenuList.removeChild(mobileMenuList.firstChild);
     }
 
+    // IMPORTANT: This navLinksData MUST match the data.js content
     const navLinksData = [
       { name: "Home", path: "/" },
       { name: "About Us", path: "/about" },
       { name: "Services", path: "/services" },
       { name: "Blog", path: "/blog" },
       { name: "Contact Us", path: "/contact" },
+      // ADDED BOOK NOW BUTTON TO MOBILE MENU DATA
+      { name: "Book Now", path: "/contact", isButton: true },
     ];
     const currentPath = window.location.pathname;
 
@@ -78,10 +86,25 @@ const currentPath = Astro.url.pathname;
         const a = document.createElement('a');
         a.href = link.path;
         a.textContent = link.name;
-        a.classList.add('mobile-menu-item');
-        if (currentPath === link.path) {
-            a.classList.add('active');
+        
+        if (link.isButton) {
+            a.classList.add('btn-primary'); // Apply button style for mobile
+            a.classList.add('text-white'); // Ensure white text
+             // Open in new tab
+            a.rel = "noopener noreferrer";
+            li.style.marginTop = 'var(--spacing-1)'; // Add a bit more space above the button
+            li.style.marginBottom = 'var(--spacing-1)'; // Add a bit more space below
+            li.style.width = '100%'; // Ensure button takes full width of menu
+            a.style.display = 'block'; // Ensure it's a block-level button
+            a.style.textAlign = 'center'; // Center the text within the button
+        } else {
+            a.classList.add('mobile-menu-item');
+            // Apply active class only to regular nav items in mobile menu
+            if (currentPath === link.path) {
+                a.classList.add('active');
+            }
         }
+        
         li.appendChild(a);
         mobileMenuList.appendChild(li);
     });
@@ -141,9 +164,12 @@ const currentPath = Astro.url.pathname;
     const desktopNavLinks = document.querySelectorAll('.header-nav-desktop .nav-link');
 
     desktopNavLinks.forEach(link => {
-      link.classList.remove('active'); // Remove active from all first
-      if (link.dataset.navPath === currentPath) {
-        link.classList.add('active'); // Add active to matching link
+      // Only process non-button links for 'active' class
+      if (link.dataset.navPath && link.classList.contains('nav-link') && !link.classList.contains('btn-primary')) {
+        link.classList.remove('active'); // Remove active from all first
+        if (link.dataset.navPath === currentPath) {
+          link.classList.add('active'); // Add active to matching link
+        }
       }
     });
   }
@@ -174,12 +200,12 @@ const currentPath = Astro.url.pathname;
   // Initialize on DOMContentLoaded and after Astro View Transitions
   document.addEventListener('DOMContentLoaded', () => {
     initializeMobileMenu();
-    activateDesktopNavLinks(); // NEW: Activate desktop nav on initial load
+    activateDesktopNavLinks();
     setupScrollHeaderEffect();
   });
   document.addEventListener('astro:after-swap', () => {
     initializeMobileMenu();
-    activateDesktopNavLinks(); // NEW: Re-activate desktop nav after view transitions
+    activateDesktopNavLinks();
     setupScrollHeaderEffect();
   });
 </script>

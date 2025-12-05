@@ -139,10 +139,7 @@ main {
 .bg-dark { background: linear-gradient(to bottom, var(--color-gray-100), var(--color-bg)); } /* For footer */
 
 /* New Gradient Background for Sections */
-.bg-gradient-section {
-    background-color: rgb(178, 203, 237); (!important)
-    background: var(--color-bg); background-image: linear-gradient(to bottom, rgba(var(--color-primary-blue-rgb), 0.05), rgba(var(--color-accent-green-rgb), 0.05));
-}
+
 
 
 /* Font weights */
